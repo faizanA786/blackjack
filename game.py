@@ -1,34 +1,43 @@
 import new_card as nc
+import new_trump as nt
+import game_utils as u
 import player as p
 import dealer as d
 import time
 
 def init():
+    playerTDeck = []
+    enemyTDeck = []
     playerDeck = [nc.newCard(), nc.newCard()]
     enemyDeck = [nc.newCard(), nc.newCard()]
-    p.viewCard(0, playerDeck, enemyDeck)
-    p.viewCard(1, playerDeck, enemyDeck)
-    nextTurn(playerDeck, enemyDeck)
+    u.updateLimit(21)
+    p.viewCard(0, playerDeck, playerTDeck, enemyDeck)
+    p.viewCard(1, playerDeck, playerTDeck, enemyDeck)
+    nextTurn(playerDeck, enemyDeck, playerTDeck, enemyTDeck)
 
-def nextTurn(playerDeck, enemyDeck):
+def nextTurn(playerDeck, enemyDeck, playerTDeck, enemyTDeck):
     gameOver = False
     while gameOver == False:
-        playerPassed = p.navigate(playerDeck, enemyDeck)
+        playerPassed = p.navigate(playerDeck, enemyDeck, playerTDeck)
         dealerPassed = d.determineDecision(playerDeck, enemyDeck)
         if playerPassed and dealerPassed:
             compareScore(playerDeck, enemyDeck)
             gameOver = True
+        else:
+            print("\nYou have recieved a new trump card!")
+            playerTDeck.append(nt.newTrumpCard())
+            enemyTDeck.append(nt.newTrumpCard())
 
 def compareScore(playerDeck, enemyDeck):
-    playerSum = 0
-    enemySum = 0
-    for i in range(len(playerDeck)):
-        playerSum  += playerDeck[i].value
-    for i in range(len(enemyDeck)):
-        enemySum  += enemyDeck[i].value
+    playerSum = u.getTotal(playerDeck)
+    enemySum = u.getTotal(enemyDeck)
 
-    if playerSum > enemySum and playerSum <= 21:
-        print("Game over.")
-    else:
+    print("\nYour total " + str(playerSum))
+    print("Dealer total " + str(enemySum))
+
+    if playerSum > u.updateLimit(None) and enemySum > u.updateLimit(None):
+        print("Game over, nobody wins.")
+    elif (playerSum > enemySum or enemySum > u.updateLimit(None)) and playerSum <= u.updateLimit(None):
         print("You win!")
-
+    else:
+        print("Game over, you lost to the dealer.")
