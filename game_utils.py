@@ -1,32 +1,42 @@
+import time
+
 def getTotal(deck):
     sum = 0 
     for i in range(len(deck)):
         sum += deck[i].value
     return sum
 
-def updateLimit(newLimit, limit=[0]):
+def updateLimit(newLimit=None, limit=[21]):
     if newLimit is None:
          return limit[0]
     else:
         limit[0] = newLimit
         return limit[0]
     
-def getTrump(trumpVal, playerTDeck):
-    match trumpVal:
-        case 0:
-            for i in range(len(playerTDeck)):
-                if trumpVal == playerTDeck[i].trumpVal:
-                    playerTDeck.pop(i)
-                    return True
-        case _:
-            return False
+def getTrump(trumpVal, Tdeck):
+    for i in range(len(Tdeck)):
+        if trumpVal == Tdeck[i].trumpVal:
+            Tdeck.pop(i)
+            return True
+    return False
                 
-def useTrump(trumpVal):
+def useTrump(trumpVal, deck=None):
     match trumpVal:
         case 0:
             trump27()
+        case 1:
+            trump17()
 
 def trump27():
+    time.sleep(1)
+    print("The card limit has increased to 27!")
+    time.sleep(1)
     updateLimit(27)
+
+def trump17():
+    time.sleep(1)
+    print("The card limit has decreased to 17!")
+    time.sleep(1)
+    updateLimit(17)
 
    

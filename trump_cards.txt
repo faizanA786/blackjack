@@ -1,0 +1,10 @@
+(0) - 27 : Increase card limit from 21 to 27
+(1) - 17 : Decrease card limit from 21 to 17
+(2) - Refresh : Discards hand, draws 2 random cards and ends turn
+(3) - Mistake : Discards the last drawn card
+(4) - 7-Draw : Draws a 7 and ends turn
+(5) - 3-Loss : Draws a -3 
+(6) - Swap : Choose to swap a card with the dealer
+(7) - Stop : Choose to swap a card with another random card
+(8) - Hand-Swap : Choose to swap your entire hand with the dealer
+(9) - Wild-Card : Draw a card representing any value and ends your turn
