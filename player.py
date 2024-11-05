@@ -20,7 +20,11 @@ def navigate(playerDeck, enemyDeck, playerTDeck):
                 print("\nYou stand...")
                 return True
             case 2: # Trump Card
-                useTrump(playerDeck, enemyDeck, playerTDeck)
+                newDeck = useTrump(playerDeck, playerTDeck)
+                if newDeck is not None:
+                    playerDeck = newDeck
+                    deciding = False
+                    return False
             case 3: # View
                 deck = int(input("\n0 - Your deck\n1 - Dealer Deck\nYou: "))
                 viewCard(deck, playerDeck, playerTDeck, enemyDeck)
@@ -33,7 +37,7 @@ def drawCard(playerDeck):
     playerDeck.append(newCard)
     return
 
-def useTrump(playerDeck, enemyDeck, playerTDeck):
+def useTrump(playerDeck, playerTDeck):
     if len(playerTDeck) > 0:
         print("\nYour trump cards:")
         time.sleep(1)
@@ -42,8 +46,8 @@ def useTrump(playerDeck, enemyDeck, playerTDeck):
     trumpVal = int(input("\nEnter the value associated with the card to use it (x), or return to navigation (-1)\nYou: "))
     if u.getTrump(trumpVal, playerTDeck): 
         print("\nYou used a trump card!")
-        u.useTrump(trumpVal)
-        return
+        newDeck = u.useTrump(trumpVal)
+        return newDeck
     elif trumpVal == -1:
         return
     elif u.getTrump(trumpVal, playerTDeck) == False:

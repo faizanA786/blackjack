@@ -44,6 +44,10 @@ def decideTrump(playerSum, enemySum, enemyTDeck):
             print("\nDealer used 17!")
             u.useTrump(1)
             usedTrump = True
+        elif u.getTrump(2, enemyTDeck) and enemySum >= u.updateLimit(): # Refresh
+            time.sleep(1)
+            print("\nDealer used Refresh!")
+            u.useTrump(2)
         else:
             decidingTrump = False
     return usedTrump

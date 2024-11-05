@@ -1,4 +1,5 @@
 import time
+import new_card as nc
 
 def getTotal(deck):
     sum = 0 
@@ -20,12 +21,14 @@ def getTrump(trumpVal, Tdeck):
             return True
     return False
                 
-def useTrump(trumpVal, deck=None):
+def useTrump(trumpVal):
     match trumpVal:
         case 0:
             trump27()
         case 1:
             trump17()
+        case 2:
+            return trumpRefresh()
 
 def trump27():
     time.sleep(1)
@@ -38,5 +41,14 @@ def trump17():
     print("The card limit has decreased to 17!")
     time.sleep(1)
     updateLimit(17)
+
+def trumpRefresh():
+    newDeck = []
+    newDeck = [nc.newCard(), nc.newCard()]
+    time.sleep(1)
+    print("You discard your hand, and draw two random cards.")
+    time.sleep(1)
+    return newDeck
+
 
    
