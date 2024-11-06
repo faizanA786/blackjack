@@ -2,14 +2,15 @@ import time
 import random
 import new_card as nc
 import game_utils as u
+import new_trump as nt
 
 def determineDecision(playerDeck, enemyDeck, enemyTDeck):
+    usedTrump, specialTrump = decideTrump(u.getTotal(playerDeck), u.getTotal(enemyDeck), enemyTDeck, enemyDeck)
     risk = riskCheck(u.getTotal(enemyDeck), u.getTotal(playerDeck))
-    usedTrump = decideTrump(u.getTotal(playerDeck), u.getTotal(enemyDeck), enemyTDeck)
-    if risk:
+    if risk and not specialTrump:
         drawCard(enemyDeck)
         return False
-    elif usedTrump:
+    elif specialTrump or usedTrump:
         time.sleep(1)
         print("\nDealer stands...")
         time.sleep(1)
@@ -30,27 +31,28 @@ def drawCard(enemyDeck):
     time.sleep(1)
     return
 
-def decideTrump(playerSum, enemySum, enemyTDeck):
-    decidingTrump = True
+def decideTrump(playerSum, enemySum, enemyTDeck, enemyDeck):
+    trumpClass = nt.newTrumpCard()
+    trumpConditions = {
+    0: lambda: u.updateLimit() != 27 and (u.getTrump(0, enemyTDeck) and enemySum <= 27) and (enemySum > u.updateLimit()), # 27
+    1: lambda: u.updateLimit() != 17 and ((u.getTrump(1,enemyTDeck) and enemySum <= 17) and playerSum > 17), # 17
+    2: lambda: u.getTrump(2, enemyTDeck) and enemySum > u.updateLimit() # Refresh
+    }
+
     usedTrump = False
-    while decidingTrump:
-        if u.updateLimit() != 27 and (u.getTrump(0, enemyTDeck) and enemySum <= 27) and (enemySum > u.updateLimit()): # 27
-            time.sleep(1)
-            print("\nDealer used 27!")
-            u.useTrump(0)
+    specialTrump = False
+    for trumpVal, useCondition in trumpConditions.items(): # Allows me to loop through the keys and values, where trumpVal = key and trumpCondition is the value
+        if useCondition() and not specialTrump:
             usedTrump = True
-        elif u.updateLimit() != 17 and ((u.getTrump(1,enemyTDeck) and enemySum <= 17) and playerSum > 17): # 17
             time.sleep(1)
-            print("\nDealer used 17!")
-            u.useTrump(1)
-            usedTrump = True
-        elif u.getTrump(2, enemyTDeck) and enemySum >= u.updateLimit(): # Refresh
-            time.sleep(1)
-            print("\nDealer used Refresh!")
-            u.useTrump(2)
-        else:
-            decidingTrump = False
-    return usedTrump
+            print("\nDealer used " + str(trumpClass.getName(trumpVal)))
+            newDeck = u.useTrump(trumpVal)
+            if newDeck is not None:
+                enemyDeck = newDeck
+            match trumpVal:
+                case 2:
+                    specialTrump = True
+    return usedTrump, specialTrump
 
 
 def riskCheck(enemySum, playerSum):

@@ -1,5 +1,6 @@
 import time
 import new_card as nc
+import new_trump as nt
 
 def getTotal(deck):
     sum = 0 
@@ -14,6 +15,15 @@ def updateLimit(newLimit=None, limit=[21]):
         limit[0] = newLimit
         return limit[0]
     
+def dupeTrump(deck):
+    if len(deck) < 4:
+        genNewTrump = False
+        while not genNewTrump:
+            newTrump = nt.newTrumpCard()
+            if not any(newTrump.trumpVal == card.trumpVal for card in deck):
+                deck.append(newTrump)
+                return True
+                
 def getTrump(trumpVal, Tdeck):
     for i in range(len(Tdeck)):
         if trumpVal == Tdeck[i].trumpVal:
@@ -43,10 +53,9 @@ def trump17():
     updateLimit(17)
 
 def trumpRefresh():
-    newDeck = []
     newDeck = [nc.newCard(), nc.newCard()]
     time.sleep(1)
-    print("You discard your hand, and draw two random cards.")
+    print("Hand discarded, two new random cards drawn.")
     time.sleep(1)
     return newDeck
 

@@ -8,7 +8,7 @@ class newTrumpCard:
 
     def randTrump(self):
         random.seed()
-        trumpVal = random.randint(0,1)
+        trumpVal = random.randint(0,2)
         match trumpVal:
             case 0:
                 trumpVal = 0

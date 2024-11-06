@@ -24,9 +24,12 @@ def nextRound(playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, deale
             roundOver = True
             compareScore(playerDeck, enemyDeck, playerScore, dealerScore)
         else:
-            print("\nYou have recieved a new trump card!")
-            playerTDeck.append(nt.newTrumpCard())
-            enemyTDeck.append(nt.newTrumpCard())
+            if u.dupeTrump(playerTDeck) == True:
+                print("\nYou have recieved a new trump card!")
+            else:
+                print("\nYou have not recieved a new trump card, trump card deck full!")
+            u.dupeTrump(enemyTDeck)
+
 
 def compareScore(playerDeck, enemyDeck, playerScore, dealerScore):
     playerSum = u.getTotal(playerDeck)
