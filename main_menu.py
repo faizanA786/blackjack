@@ -1,17 +1,22 @@
 import time
-import os
+from userstats import viewStats
 
-def menu():
-    os.system("cls")
-    nav = int(input("Welcome to blackjack!\nWhat would you like to do?\n0 - Play\n1 - Rules\n2 - Exit\nYou: "))
-    match nav:
-        case 0: # Play
-            os.system("cls")
-            return
-        case 1: # Rules
-            rules()
-        case 2:
-            exit()
+def menu(userID):
+    print("\nWelcome to blackjack!")
+    navigating = True
+    while (navigating):
+        nav = int(input("\nWhat would you like to do?\n0 - Play\n1 - Stats\n2 - Rules\n3 - Exit\nYou: "))
+        match nav:
+            case 0: # Play
+                navigating = False
+                return
+            case 1: # Stats
+                viewStats(userID)
+            case 2:  # Rules
+                rules()
+            case 3: 
+                navigating = False 
+                exit()
 
 def rules():
         print("\n1. You and the dealer will always start off with 2 random cards in your deck, where your first card will always be hidden to your opponent(same goes for dealer).")
@@ -26,4 +31,3 @@ def rules():
         time.sleep(2)
         print("6. First to 3 wins is declared as the winner.")
         time.sleep(2)
-        menu()

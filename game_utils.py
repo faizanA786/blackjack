@@ -16,7 +16,7 @@ def updateLimit(newLimit=None, limit=[21]):
         return limit[0]
     
 def dupeTrump(deck):
-    if len(deck) < 4:
+    if len(deck) < 2:
         genNewTrump = False
         while not genNewTrump:
             newTrump = nt.newTrumpCard()

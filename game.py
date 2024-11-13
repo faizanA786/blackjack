@@ -1,11 +1,12 @@
 import new_card as nc
 import new_trump as nt
 import game_utils as u
+from userstats import updateStats
 import player as p
 import dealer as d
 import time
 
-def init(playerScore=0, dealerScore=0):
+def init(userID, playerScore=0, dealerScore=0):
     playerTDeck = []
     enemyTDeck = []
     playerDeck = [nc.newCard(), nc.newCard()]
@@ -13,16 +14,16 @@ def init(playerScore=0, dealerScore=0):
     u.updateLimit(21)
     p.viewCard(0, playerDeck, playerTDeck, enemyDeck)
     p.viewCard(1, playerDeck, playerTDeck, enemyDeck)
-    nextRound(playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore)
+    nextRound(userID, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore)
 
-def nextRound(playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore):
+def nextRound(userID, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore):
     roundOver = False
     while roundOver == False:
         playerPassed:bool = p.navigate(playerDeck, enemyDeck, playerTDeck)
         dealerPassed:bool = d.determineDecision(playerDeck, enemyDeck, enemyTDeck)
         if playerPassed and dealerPassed:
             roundOver = True
-            compareScore(playerDeck, enemyDeck, playerScore, dealerScore)
+            compareScore(userID, playerDeck, enemyDeck, playerScore, dealerScore)
         else:
             if u.dupeTrump(playerTDeck) == True:
                 print("\nYou have recieved a new trump card!")
@@ -31,7 +32,7 @@ def nextRound(playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, deale
             u.dupeTrump(enemyTDeck)
 
 
-def compareScore(playerDeck, enemyDeck, playerScore, dealerScore):
+def compareScore(userID, playerDeck, enemyDeck, playerScore, dealerScore):
     playerSum = u.getTotal(playerDeck)
     enemySum = u.getTotal(enemyDeck)
 
@@ -47,11 +48,12 @@ def compareScore(playerDeck, enemyDeck, playerScore, dealerScore):
         print("Dealer : " + str(dealerScore) + "/3")
         if playerScore == 3:
             print("\nYou are the winner!")
+            updateStats(userID, 0)
         else:
             time.sleep(1)
             print("\nStarting next round...")
             time.sleep(1)
-            init(playerScore, dealerScore)
+            init(userID, playerScore, dealerScore)
     else:
         print("Round over, you lost to the dealer.")
         dealerScore += 1
@@ -59,8 +61,9 @@ def compareScore(playerDeck, enemyDeck, playerScore, dealerScore):
         print("Dealer : " + str(dealerScore) + "/3")
         if dealerScore == 3:
             print("\nGame over.")
+            updateStats(userID, 1)
         else:
             time.sleep(1)
             print("\nStarting next round...")
             time.sleep(1)
-            init(playerScore, dealerScore)
+            init(userID, playerScore, dealerScore)
