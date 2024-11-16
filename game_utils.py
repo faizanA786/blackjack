@@ -16,7 +16,7 @@ def updateLimit(newLimit=None, limit=[21]):
         return limit[0]
     
 def dupeTrump(deck):
-    if len(deck) < 2:
+    if len(deck) < 3:
         genNewTrump = False
         while not genNewTrump:
             newTrump = nt.newTrumpCard()
@@ -31,33 +31,42 @@ def getTrump(trumpVal, Tdeck):
             return True
     return False
                 
-def useTrump(trumpVal):
+def useTrump(trumpVal, pile=None, deck=None):
     match trumpVal:
         case 0:
             trump27()
         case 1:
             trump17()
         case 2:
-            return trumpRefresh()
+            return trumpRefresh(pile)
+        case 3:
+            trumpDiscard(pile, deck)
 
 def trump27():
+    updateLimit(27)
     time.sleep(1)
     print("The card limit has increased to 27!")
     time.sleep(1)
-    updateLimit(27)
 
 def trump17():
+    updateLimit(17)
     time.sleep(1)
     print("The card limit has decreased to 17!")
     time.sleep(1)
-    updateLimit(17)
 
-def trumpRefresh():
-    newDeck = [nc.newCard(), nc.newCard()]
+def trumpRefresh(pile):
+    newDeck = [pile.pop(), pile.pop()]
     time.sleep(1)
-    print("Hand discarded, two new random cards drawn.")
+    print("Hand discarded, two cards from pile drawn.")
     time.sleep(1)
     return newDeck
 
+def trumpDiscard(pile, deck):
+    last = len(deck)-1
+    card = deck.pop()
+    pile.append(card)
+    time.sleep(1)
+    print("Last card discarded.")
+    time.sleep(1)
 
    

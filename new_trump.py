@@ -8,7 +8,7 @@ class newTrumpCard:
 
     def randTrump(self):
         random.seed()
-        trumpVal = random.randint(0,2)
+        trumpVal = random.randint(0,3)
         match trumpVal:
             case 0:
                 trumpVal = 0
@@ -17,7 +17,7 @@ class newTrumpCard:
             case 2:
                 trumpVal = 2
             case 3:
-                trumpVal = -1
+                trumpVal = 3
         return trumpVal
     
     def getName(self, trumpVal):
@@ -28,6 +28,8 @@ class newTrumpCard:
                 return "17"
             case 2:
                 return "Refresh"
+            case 3:
+                return "Discard"
             
     def getDesc(self, trumpVal):
         match trumpVal:
@@ -37,3 +39,5 @@ class newTrumpCard:
                 return "Decreases the cap from 21 to 17"
             case 2:
                return "Discards hand, draws 2 random cards and ends turn"
+            case 3:
+               return "Discards the last drawn card"

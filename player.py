@@ -2,7 +2,7 @@ import new_card as nc
 import game_utils as u
 import time
 
-def navigate(playerDeck, enemyDeck, playerTDeck):
+def navigate(pile, playerDeck, enemyDeck, playerTDeck):
     deciding = True
     while deciding:
         nav = int(input("\n0 - Draw\n1 - Pass\n2 - Use Trump Card\n3 - View Deck\nYou: "))
@@ -11,7 +11,7 @@ def navigate(playerDeck, enemyDeck, playerTDeck):
                 playerSum = u.getTotal(playerDeck)
                 if playerSum < u.updateLimit():
                     deciding = False
-                    drawCard(playerDeck)
+                    drawCard(pile, playerDeck)
                     return False
                 else:
                     print("\nYou cannot draw a card! You are above " + str(u.updateLimit()) + "!")
@@ -20,25 +20,25 @@ def navigate(playerDeck, enemyDeck, playerTDeck):
                 print("\nYou stand...")
                 return True
             case 2: # Trump Card
-                trumpVal, newDeck = useTrump(playerDeck, playerTDeck)
+                trumpVal, newDeck = useTrump(pile, playerDeck, playerTDeck)
                 match trumpVal:
                     case 2:
                         playerDeck[:] = newDeck
-                        deciding = False
-                        return False
+                        # deciding = False
+                        # return False
             case 3: # View
                 deck = int(input("\n0 - Your deck\n1 - Dealer Deck\nYou: "))
                 viewCard(deck, playerDeck, playerTDeck, enemyDeck)
 
-def drawCard(playerDeck):
+def drawCard(pile, playerDeck):
     print("\nYou draw a card...")
     time.sleep(1)
-    newCard = nc.newCard()
+    newCard = pile.pop()
     print("You were dealt a " + str(newCard.value) + " " + newCard.symbol)
     playerDeck.append(newCard)
     return
 
-def useTrump(playerDeck, playerTDeck):
+def useTrump(pile, playerDeck, playerTDeck):
     if len(playerTDeck) > 0:
         print("\nYour trump cards:")
         time.sleep(1)
@@ -47,7 +47,7 @@ def useTrump(playerDeck, playerTDeck):
     trumpVal = int(input("\nEnter the value associated with the card to use it (x), or return to navigation (-1)\nYou: "))
     if u.getTrump(trumpVal, playerTDeck): 
         print("\nYou used a trump card!")
-        return trumpVal, u.useTrump(trumpVal)
+        return trumpVal, u.useTrump(trumpVal, pile, playerDeck)
     elif trumpVal == -1:
         return -1, None
     elif u.getTrump(trumpVal, playerTDeck) == False:

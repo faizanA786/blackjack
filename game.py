@@ -9,18 +9,25 @@ import time
 def init(userID, playerScore=0, dealerScore=0):
     playerTDeck = []
     enemyTDeck = []
-    playerDeck = [nc.newCard(), nc.newCard()]
-    enemyDeck = [nc.newCard(), nc.newCard()]
+    pile = []
+
+    for i in range(312):
+        pile.append(nc.newCard())
+
+    playerDeck = [pile.pop(), pile.pop()]
+    enemyDeck = [pile.pop(), pile.pop()]
+
     u.updateLimit(21)
     p.viewCard(0, playerDeck, playerTDeck, enemyDeck)
     p.viewCard(1, playerDeck, playerTDeck, enemyDeck)
-    nextRound(userID, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore)
+    nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore)
 
-def nextRound(userID, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore):
+def nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore):
     roundOver = False
     while roundOver == False:
-        playerPassed:bool = p.navigate(playerDeck, enemyDeck, playerTDeck)
-        dealerPassed:bool = d.determineDecision(playerDeck, enemyDeck, enemyTDeck)
+        playerPassed:bool = p.navigate(pile, playerDeck, enemyDeck, playerTDeck)
+        dealerPassed:bool = d.determineDecision(pile, playerDeck, enemyDeck, enemyTDeck)
+
         if playerPassed and dealerPassed:
             roundOver = True
             compareScore(userID, playerDeck, enemyDeck, playerScore, dealerScore)
