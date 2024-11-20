@@ -1,7 +1,15 @@
+"""
+main_menu.py
+
+This module contains all the methods related to the menu for the game.
+"""
+
+
+# dependencies
 import time
 from userstats import viewStats
 
-def menu(userID):
+def menu(userID): # lets the user navigate between the different options
     print("\nWelcome to blackjack!")
     navigating = True
     while (navigating):
@@ -17,8 +25,9 @@ def menu(userID):
             case 3: 
                 navigating = False 
                 exit()
+    #END menu
 
-def rules():
+def rules(): # prints the rules of blackjack
         print("\n1. You and the dealer will always start off with 2 random cards in your deck, where your first card will always be hidden to your opponent(same goes for dealer).")
         time.sleep(3)
         print("2. You must either draw a card, or pass - If you choose to draw a card, you will be given a random card from 1 to 11 that will be added to your deck. If you pass, you will skip to the dealers turn.")
@@ -31,3 +40,4 @@ def rules():
         time.sleep(2)
         print("6. First to 3 wins is declared as the winner.")
         time.sleep(2)
+    #END rules

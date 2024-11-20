@@ -1,12 +1,21 @@
+"""
+new_trump.py
+
+Creates a new object that resembles a trump card
+The type of trump card is always randomized
+"""
+
+# dependencies
 import random
 
-class newTrumpCard:
+class newTrumpCard: # initialises the creation of a new trump card
     def __init__(self):
         self.trumpVal = self.randTrump()
         self.name = self.getName(self.trumpVal)
         self.desc = self.getDesc(self.trumpVal)
+        #END __init__
 
-    def randTrump(self):
+    def randTrump(self): # randomises a trump value, the type of trump card this will be
         random.seed()
         trumpVal = random.randint(0,3)
         match trumpVal:
@@ -19,8 +28,9 @@ class newTrumpCard:
             case 3:
                 trumpVal = 3
         return trumpVal
+        #END randTrump
     
-    def getName(self, trumpVal):
+    def getName(self, trumpVal): # grabs the name of the new trump card via its trump value
         match trumpVal:
             case 0:
                 return "27"
@@ -30,8 +40,9 @@ class newTrumpCard:
                 return "Refresh"
             case 3:
                 return "Discard"
+        #END getName
             
-    def getDesc(self, trumpVal):
+    def getDesc(self, trumpVal): # grabs the description of the new trump card via its trump value
         match trumpVal:
             case 0:
                 return "Increases the cap from 21 to 27"
@@ -41,3 +52,4 @@ class newTrumpCard:
                return "Discards hand, draws 2 random cards and ends turn"
             case 3:
                return "Discards the last drawn card"
+        #END getDesc

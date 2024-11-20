@@ -1,7 +1,15 @@
+"""
+userstats.py
+
+Controls user profiles.
+"""
+
+
+# dependencies
 import sqlite3 as sq
 import time
 
-def dbInit():
+def dbInit(): # creates a database if there already isnt one with a table called users
     connectDatabase = sq.connect("user.db")
     database = connectDatabase.cursor()
 
@@ -24,8 +32,9 @@ def dbInit():
 
     connectDatabase.commit()
     connectDatabase.close()
+    #END dbInit
 
-def newProfile(username, password):
+def newProfile(username, password): # insert a new profile into the users table
     connectDatabase = sq.connect("user.db")
     database = connectDatabase.cursor()
 
@@ -43,8 +52,9 @@ def newProfile(username, password):
         userID = database.fetchone()
         connectDatabase.close()
         return userID[0]
+    #END newProfile
 
-def login(username, password):
+def login(username, password): # login to an existing profile inside the users table
     connectDatabase = sq.connect("user.db")
     database = connectDatabase.cursor()
 
@@ -57,22 +67,25 @@ def login(username, password):
         print("Logged in!")
         connectDatabase.close()
         return userID[0]
+    #END login
 
-def updateStats(userID, stats):
+def updateStats(userID, stats): # update games, win, loss stats accordingly
     connectDatabase = sq.connect("user.db")
     database = connectDatabase.cursor()
 
     database.execute("UPDATE users SET games = games + 1 WHERE user_id = ?", [userID])
     match stats:
-        case 0: # Win
+        case 0: # win
             database.execute("UPDATE users SET games_won = games_won + 1 WHERE user_id = ?", [userID])
             connectDatabase.commit()
-        case 1: # Lose
+        case 1: # lose
             database.execute("UPDATE users SET games_lost = games_lost + 1 WHERE user_id = ?", [userID])
             connectDatabase.commit()
     connectDatabase.close()
+    #END updateStats
+    
 
-def viewStats(userID):
+def viewStats(userID): # prints the users overall stats
     connectDatabase = sq.connect("user.db")
     database = connectDatabase.cursor()
 
@@ -85,3 +98,4 @@ def viewStats(userID):
     print("Losses : " + str(stats[2]))
     connectDatabase.close()
     time.sleep(1)
+    #END viewStats

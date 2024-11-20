@@ -1,21 +1,30 @@
+"""
+game_utils.py
+
+Important game utilities used by both the player and dealer.
+"""
+
+# dependencies
 import time
 import new_card as nc
 import new_trump as nt
 
-def getTotal(deck):
+def getTotal(deck): # calculates the value sum of cards of the given deck
     sum = 0 
     for i in range(len(deck)):
         sum += deck[i].value
     return sum
+    #END getTotal
 
-def updateLimit(newLimit=None, limit=[21]):
+def updateLimit(newLimit=None, limit=[21]): # updates the card limit from default 21
     if newLimit is None:
          return limit[0]
     else:
         limit[0] = newLimit
         return limit[0]
+    #END updateLimit
     
-def dupeTrump(deck):
+def dupeTrump(deck): # inserts a random trump card in the given deck, avoiding placing in a card thats already within the deck 
     if len(deck) < 3:
         genNewTrump = False
         while not genNewTrump:
@@ -23,15 +32,17 @@ def dupeTrump(deck):
             if not any(newTrump.trumpVal == card.trumpVal for card in deck):
                 deck.append(newTrump)
                 return True
+    #END dupeTrump
                 
-def getTrump(trumpVal, Tdeck):
+def getTrump(trumpVal, Tdeck): # runs a linear search on the deck to see if it contains the selected trump card or not
     for i in range(len(Tdeck)):
         if trumpVal == Tdeck[i].trumpVal:
             Tdeck.pop(i)
             return True
     return False
+    #END getTrump
                 
-def useTrump(trumpVal, pile=None, deck=None):
+def useTrump(trumpVal, pile=None, deck=None): # calls the method linked to the trump card
     match trumpVal:
         case 0:
             trump27()
@@ -41,32 +52,37 @@ def useTrump(trumpVal, pile=None, deck=None):
             return trumpRefresh(pile)
         case 3:
             trumpDiscard(pile, deck)
+    #END useTrump
 
-def trump27():
+def trump27(): # sets card limit to 27
     updateLimit(27)
     time.sleep(1)
     print("The card limit has increased to 27!")
     time.sleep(1)
+    #END trump27
 
-def trump17():
+def trump17(): # sets card limit to 17
     updateLimit(17)
     time.sleep(1)
     print("The card limit has decreased to 17!")
     time.sleep(1)
+    #END trump17
 
-def trumpRefresh(pile):
+def trumpRefresh(pile): # returns a new deck with two random cards from the pile
     newDeck = [pile.pop(), pile.pop()]
     time.sleep(1)
     print("Hand discarded, two cards from pile drawn.")
     time.sleep(1)
     return newDeck
+    #END trumpRefresh
 
-def trumpDiscard(pile, deck):
+def trumpDiscard(pile, deck): # discards the last card drawn
     last = len(deck)-1
     card = deck.pop()
     pile.append(card)
     time.sleep(1)
     print("Last card discarded.")
     time.sleep(1)
+    #END trumpDiscard
 
    

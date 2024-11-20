@@ -2,6 +2,8 @@
 (1) - 17 : Decrease card limit from 21 to 17
 (2) - Refresh : Discards hand, draws 2 random cards 
 (3) - Discard : Discards the last drawn card
+
+TBA
 (4) - 7-Draw : Draws a 7 
 (5) - Swap : Choose to swap your entire hand with the dealer
 (6) - Best-Draw : Draw the best card for your deck 

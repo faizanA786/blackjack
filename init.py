@@ -1,8 +1,16 @@
+"""
+init.py
+
+The root of the program.
+This is called upon launching the program.
+"""
+
+# dependencies
 from userstats import dbInit, newProfile, login 
 import main_menu
 import game
 
-def init():
+def init(): # initialises the program
     dbInit()
     nav = int(input("Login (0)\nNew Account (1)\nYou: "))
     signedIn = False
@@ -19,10 +27,12 @@ def init():
                     signedIn = True
     main_menu.menu(userID)
     game.init(userID)
+    #END init
 
-def loginDetails():
+def loginDetails(): # fetches user input for username and password
     username = input("Username: ")
     password = input("Password: ")
     return username, password
+    #END loginDetails
 
 init()

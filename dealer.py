@@ -1,10 +1,18 @@
+"""
+dealer.py
+
+Basic dealer functionality.
+Includes methods that let the dealer determine their decision, draw a card (if they deem its safe to) and use logic to decide hen to draw a trump
+"""
+
+# dependencies
 import time
 import random
 import new_card as nc
 import game_utils as u
 import new_trump as nt
 
-def determineDecision(pile, playerDeck, enemyDeck, enemyTDeck):
+def determineDecision(pile, playerDeck, enemyDeck, enemyTDeck): # dealer determines what choice to make
     specialTrump = decideTrump(pile, u.getTotal(playerDeck), u.getTotal(enemyDeck), enemyTDeck, enemyDeck)
     risk = riskCheck(u.getTotal(enemyDeck), u.getTotal(playerDeck))
     if risk and not specialTrump:
@@ -18,8 +26,9 @@ def determineDecision(pile, playerDeck, enemyDeck, enemyTDeck):
             return True
         else:
             return False
+    #END determineDecision
 
-def drawCard(pile, enemyDeck):
+def drawCard(pile, enemyDeck): # draws a random card for the dealer
     time.sleep(1)
     print("\nDealer draws...")
     newCard = pile.pop()
@@ -28,8 +37,9 @@ def drawCard(pile, enemyDeck):
     enemyDeck.append(newCard)
     time.sleep(1)
     return
+    #END drawCard
 
-def decideTrump(pile, playerSum, enemySum, enemyTDeck, enemyDeck):
+def decideTrump(pile, playerSum, enemySum, enemyTDeck, enemyDeck): # basic logic for when to use specific trump cards
     trumpClass = nt.newTrumpCard()
     trumpConditions = {
     0: lambda: u.updateLimit() != 27 and (u.getTrump(0, enemyTDeck) and enemySum <= 27) and (enemySum > u.updateLimit()), # 27
@@ -49,19 +59,22 @@ def decideTrump(pile, playerSum, enemySum, enemyTDeck, enemyDeck):
             if trumpVal == 0 or trumpVal == 1:
                 specialTrump = True
     return specialTrump
+    #END decideTrump
 
 
-def riskCheck(enemySum, playerSum):
+def riskCheck(enemySum, playerSum): # decides whether it is worth drawing a card or not
     if enemySum >= u.updateLimit() or playerSum > u.updateLimit():
         return False
     elif enemySum < u.updateLimit():
         STAKE = 10 + -(enemySum/u.updateLimit())
         probability = (playerSum - enemySum) / STAKE
         return rollDice(probability)
+    #END riskCheck
     
-def rollDice(probability):
+def rollDice(probability): # if random number generated is less than probability, then draw card
     random.seed()
     if random.random() <= probability:
         return True
     else:
         return False
+    #END rollDice
