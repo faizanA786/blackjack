@@ -4,7 +4,6 @@ userstats.py
 Controls user profiles.
 """
 
-
 # dependencies
 import sqlite3 as sq
 import time
@@ -42,6 +41,9 @@ def newProfile(username, password): # insert a new profile into the users table
     userID = database.fetchone()
     if userID is not None:
         print("This username already exists!")
+        connectDatabase.close()
+    elif username == "" or password == "":
+        print("Please enter a username/password!")
         connectDatabase.close()
     else:
         print("New profile created!")

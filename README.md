@@ -12,7 +12,7 @@ A Python-based blackjack game (heavily inspired by Resident Evil 7, 21 DLC) that
 ---
 ## Planned Features
 - **Graphical:** A Tkinter GUI for a richer user experience.
-- **Customizable Rules:** Easily modify the rules, such as deck size or starting balance.
+- **Customizable Rules:** Easily modify the rules, such as deck size.
 - **Multiplayer:** Play against a friend online.
 - **More trump cards:** More specialized trump cards are planned (see trump_cards.txt).
 ---
