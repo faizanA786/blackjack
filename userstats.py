@@ -12,16 +12,18 @@ def dbInit(): # creates a database if there already isnt one with a table called
     connectDatabase = sq.connect("user.db")
     database = connectDatabase.cursor()
 
-    database.execute(
+    database.execute
+    (
         '''
-        CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE IF NOT EXISTS users
+        (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE,
             password TEXT,
             games INTEGER DEFAULT 0,
             games_won INTEGER DEFAULT 0,
             games_lost INTEGER DEFAULT 0
-            )
+        )
         '''
     )
 

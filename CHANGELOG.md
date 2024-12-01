@@ -1,3 +1,12 @@
+## [0.3.0] - 2024-12-01
+### Added
+- Main Menu UI development
+
+### Changed
+- Updated README.md
+- Decomposed 'enterProfile' method into smaller methods
+- New folder 'gui' contains methods using tkinter 
+
 ## [0.2.0] - 2024-11-24
 ### Added
 - Login page UI development

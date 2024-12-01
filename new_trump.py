@@ -1,7 +1,7 @@
 """
 new_trump.py
 
-Creates a new object that resembles a trump card
+Creates a new advanced data type that resembles a trump card
 The type of trump card is always randomized
 """
 

@@ -1,7 +1,7 @@
 """
 new_card.py
 
-Creates a new object that resembles a card
+Creates a new advanced data type that resembles a card
 This card is always randomized
 """
 

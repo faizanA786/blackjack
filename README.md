@@ -1,6 +1,6 @@
 # Blackjack Game
 
-A Python-based blackjack game (heavily inspired by Resident Evil 7, 21 DLC) that can be played in the terminal.
+A Python-based blackjack game (heavily inspired by Resident Evil 7, 21 DLC) that can be played in the terminal. This project aims to follow the procedural programming paradigm that I am studying at university.
 
 ---
 ## Features
