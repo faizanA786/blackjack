@@ -89,17 +89,12 @@ def updateStats(userID, stats): # update games, win, loss stats accordingly
     #END updateStats
     
 
-def viewStats(userID): # prints the users overall stats
+def getStats(userID): # prints the users overall stats
     connectDatabase = sq.connect("user.db")
     database = connectDatabase.cursor()
 
     database.execute("SELECT games, games_won, games_lost FROM users WHERE user_id = ?", [userID])
     stats = database.fetchone()
-
-    time.sleep(1)
-    print("\nGames played : " + str(stats[0]))
-    print("Wins : " + str(stats[1]))
-    print("Losses : " + str(stats[2]))
     connectDatabase.close()
-    time.sleep(1)
+    return stats
     #END viewStats

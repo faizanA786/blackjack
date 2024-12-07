@@ -7,6 +7,7 @@ Initialises a round, and controls the turn based gameplay.
 
 
 # dependencies
+from gui import game_page
 import new_card as nc
 import new_trump as nt
 import game_utils as u

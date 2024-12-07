@@ -1,3 +1,11 @@
+## [0.4.0] - 2024-12-07
+### Added
+- Main Menu UI development
+
+### Changed
+- Removed module "main_menu.py".
+- Updated "viewStats" method inside "userstats.py" module.
+
 ## [0.3.0] - 2024-12-01
 ### Added
 - Main Menu UI development

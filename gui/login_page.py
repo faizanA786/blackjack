@@ -8,7 +8,7 @@ Methods that deal with all operations linked to profiles
 from tkinter import *
 from userstats import newProfile, login as existingProfile
 
-def fetchUserID(val=None, userID=[-1]): # getter, retrieves user ID
+def fetchUserID(val=None, userID=[-1]): # retrieves user ID
     if val is  None:
         return userID[0]
     else:
