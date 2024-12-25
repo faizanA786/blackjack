@@ -8,8 +8,9 @@ Methods that deal with all operations linked to the main menu
 from tkinter import *
 from userstats import getStats
 
-def game(main, userID): # launch the game window
+def game(main): # launch the game window
     main.destroy()
+    return
     #END game
 
 def createRules(main): # create the window to display the rules
@@ -49,7 +50,7 @@ def createStats(main, userID): # create window to display user stats
     header = Label(stats, text="Satistics", font=("Arial", 30), bg="black", fg="white")
     games = Label(stats, text="Games Played : " + str(playerStats[0]), font=("Arial", 25), bg="black", fg="white")
     gamesWon = Label(stats, text="Games Won : " + str(playerStats[1]), font=("Arial", 25), bg="black", fg="white")
-    gamesLost = Label(stats, text="Games Lost : " + str(playerStats[1]), font=("Arial", 25), bg="black", fg="white")
+    gamesLost = Label(stats, text="Games Lost : " + str(playerStats[2]), font=("Arial", 25), bg="black", fg="white")
 
     def close():
         main.deiconify()  
@@ -78,7 +79,7 @@ def create(userID): # create main window
 
     header = Label(main, text="Main Menu", font=("Arial", 40), bg="black", fg="white")
 
-    play = Button(main, text="Play Against Dealer", font=("Arial", 30), bg="black", fg="white", command=lambda: game(userID))
+    play = Button(main, text="Play Against Dealer", font=("Arial", 30), bg="black", fg="white", command=lambda: game(main))
     stats = Button(main, text="View Statistics", font=("Arial", 30), bg="black", fg="white", command=lambda: createStats(main, userID))
     rules = Button(main, text="Rules", font=("Arial", 30), bg="black", fg="white", command=lambda: createRules(main))
 

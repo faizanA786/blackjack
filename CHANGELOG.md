@@ -1,3 +1,10 @@
+## [0.5.0] - 2024-12-25
+### Added
+- Major Game UI development
+
+### Changed
+- Revised "game.py"
+
 ## [0.4.0] - 2024-12-07
 ### Added
 - Main Menu UI development

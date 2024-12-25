@@ -78,11 +78,12 @@ def trumpRefresh(pile): # returns a new deck with two random cards from the pile
 
 def trumpDiscard(pile, deck): # discards the last card drawn
     last = len(deck)-1
-    card = deck.pop()
-    pile.append(card)
-    time.sleep(1)
-    print("Last card discarded.")
-    time.sleep(1)
+    if last > 2:
+        card = deck.pop()
+        pile.append(card)
+        time.sleep(1)
+        print("Last card discarded.")
+        time.sleep(1)
     #END trumpDiscard
 
    

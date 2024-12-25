@@ -5,7 +5,6 @@ The module in which the game actually takes place in.
 Initialises a round, and controls the turn based gameplay.
 """
 
-
 # dependencies
 from gui import game_page
 import new_card as nc
@@ -16,7 +15,8 @@ import player as p
 import dealer as d
 import time
 
-def init(userID, playerScore=0, dealerScore=0): # initialies a new round
+
+def init(userID, playerScore, dealerScore, window): # initialises a new round
     playerTDeck = []
     enemyTDeck = []
     pile = []
@@ -26,32 +26,45 @@ def init(userID, playerScore=0, dealerScore=0): # initialies a new round
 
     playerDeck = [pile.pop(), pile.pop()]
     enemyDeck = [pile.pop(), pile.pop()]
-
     u.updateLimit(21)
-    p.viewCard(0, playerDeck, playerTDeck, enemyDeck)
-    p.viewCard(1, playerDeck, playerTDeck, enemyDeck)
-    nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore)
+
+    dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit = game_page.initDeck(window, playerDeck, enemyDeck)
+    window.after(1000, lambda: nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, window, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit))
+    print("Round Started")
     #END init
 
-def nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore): # controls the flow of the turn-based gameplay
-    roundOver = False
-    while roundOver == False:
-        playerPassed:bool = p.navigate(pile, playerDeck, enemyDeck, playerTDeck)
-        dealerPassed:bool = d.determineDecision(pile, playerDeck, enemyDeck, enemyTDeck)
+def nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, window, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit, playerPassed=None): # controls the flow of the turn-based gameplay
+    roundCondition = False
+    def processRound(roundCondition):
 
-        if playerPassed and dealerPassed: # if both players stand, end round
-            roundOver = True
-            compareScore(userID, playerDeck, enemyDeck, playerScore, dealerScore)
-        else: # insert a new trump into both decks
-            if u.dupeTrump(playerTDeck) == True:
-                print("\nYou have recieved a new trump card!")
-            else:
-                print("\nYou have not recieved a new trump card, trump card deck full!")
-            u.dupeTrump(enemyTDeck)
+        if roundCondition == False:
+            game_page.updatePlayerButtons(window, pile, playerDeck, userID, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
+
+            if playerPassed is not None:
+                game_page.updateDeck(playerDeck, enemyDeck, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
+
+                dealerPassed:bool = d.determineDecision(pile, playerDeck, enemyDeck, enemyTDeck)
+                game_page.updateDeck(playerDeck, enemyDeck, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
+
+                print("dealer " + str(dealerPassed))
+                print("player " + str(playerPassed))
+                if playerPassed and dealerPassed: # if both players stand, end round
+                    roundCondition = True
+                    compareScore(userID, playerDeck, enemyDeck, playerScore, dealerScore, window, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
+                else: # insert a new trump into both decks
+                    if u.dupeTrump(playerTDeck) == True:
+                        print("\nYou have recieved a new trump card!")
+                        game_page.updateDeck(playerDeck, enemyDeck, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
+                    else:
+                        print("\nYou have not recieved a new trump card, trump card deck full!")
+                    u.dupeTrump(enemyTDeck)
+                    game_page.updatePlayerButtons(window, pile, playerDeck, userID, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
+
+    processRound(roundCondition)
     #END nextRound
 
 
-def compareScore(userID, playerDeck, enemyDeck, playerScore, dealerScore): # compares the two sum values of decks, and declares the appropriate winner
+def compareScore(userID, playerDeck, enemyDeck, playerScore, dealerScore, window, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit): # compares the two sum values of decks, and declares the appropriate winner
     playerSum = u.getTotal(playerDeck)
     enemySum = u.getTotal(enemyDeck)
 
@@ -69,10 +82,9 @@ def compareScore(userID, playerDeck, enemyDeck, playerScore, dealerScore): # com
             print("\nYou are the winner!")
             updateStats(userID, 0) # adds +1 to the players win stat
         else:
-            time.sleep(1)
             print("\nStarting next round...")
-            time.sleep(1)
-            init(userID, playerScore, dealerScore)
+            game_page.deleteLabels(dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
+            window.after(1000, lambda: init(userID, playerScore, dealerScore, window))
     else:
         print("Round over, you lost to the dealer.")
         dealerScore += 1
@@ -82,8 +94,7 @@ def compareScore(userID, playerDeck, enemyDeck, playerScore, dealerScore): # com
             print("\nGame over.")
             updateStats(userID, 1) # adds a +1 to the players loss stat
         else:
-            time.sleep(1)
             print("\nStarting next round...")
-            time.sleep(1)
-            init(userID, playerScore, dealerScore)
+            game_page.deleteLabels(dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
+            window.after(1000, lambda: init(userID, playerScore, dealerScore, window))
     #END compareScore

@@ -19,23 +19,18 @@ def determineDecision(pile, playerDeck, enemyDeck, enemyTDeck): # dealer determi
         drawCard(pile, enemyDeck)
         return False
     else:
-        time.sleep(1)
         print("\nDealer stands...")
-        time.sleep(1)
-        if specialTrump:
+        if not specialTrump:
             return True
         else:
             return False
     #END determineDecision
 
 def drawCard(pile, enemyDeck): # draws a random card for the dealer
-    time.sleep(1)
     print("\nDealer draws...")
     newCard = pile.pop()
-    time.sleep(1)
     print("Dealer was dealt a " + str(newCard.value) + " " + newCard.symbol)
     enemyDeck.append(newCard)
-    time.sleep(1)
     return
     #END drawCard
 
@@ -51,7 +46,6 @@ def decideTrump(pile, playerSum, enemySum, enemyTDeck, enemyDeck): # basic logic
     for trumpVal, useCondition in trumpConditions.items(): # Allows me to loop through the keys and values, where trumpVal = key and trumpCondition is the value
         if useCondition() and not specialTrump:
             usedTrump = True
-            time.sleep(1)
             print("\nDealer used " + str(trumpClass.getName(trumpVal)))
             newDeck = u.useTrump(trumpVal, pile, enemyDeck)
             if newDeck is not None:

@@ -21,7 +21,7 @@ class newCard: # initialises the creation of the card
             case 1:
                 symbol = "Spades"
             case 2:
-                symbol = "Ace"
+                symbol = "Diamonds"
             case 3:
                 symbol = "Hearts"
             case 4:
