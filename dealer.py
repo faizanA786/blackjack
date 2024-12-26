@@ -11,15 +11,19 @@ import random
 import new_card as nc
 import game_utils as u
 import new_trump as nt
+from gui import game_page
 
 def determineDecision(pile, playerDeck, enemyDeck, enemyTDeck): # dealer determines what choice to make
-    specialTrump = decideTrump(pile, u.getTotal(playerDeck), u.getTotal(enemyDeck), enemyTDeck, enemyDeck)
+    # specialTrump = decideTrump(pile, u.getTotal(playerDeck), u.getTotal(enemyDeck), enemyTDeck, enemyDeck)
+    specialTrump = False
     risk = riskCheck(u.getTotal(enemyDeck), u.getTotal(playerDeck))
     if risk and not specialTrump:
+        game_page.updateDealerAction(0)
         drawCard(pile, enemyDeck)
         return False
     else:
         print("\nDealer stands...")
+        game_page.updateDealerAction(1)
         if not specialTrump:
             return True
         else:

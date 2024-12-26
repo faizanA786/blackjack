@@ -1,3 +1,7 @@
+## [0.6.0] - 2024-12-26
+### Added
+- More Game UI development
+
 ## [0.5.0] - 2024-12-25
 ### Added
 - Major Game UI development

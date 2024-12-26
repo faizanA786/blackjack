@@ -16,8 +16,9 @@ def init(): # initialises the program and directs flow
     dbInit() # init database
     init_page.create() # login
     userID = login_page.fetchUserID()
-    menu_page.create(userID) # main menu
-    game_page.create(userID) # game
+    if userID:
+        menu_page.create(userID) # main menu
+        game_page.create(userID) # game
     #END init
 
 init()

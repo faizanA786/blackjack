@@ -10,7 +10,6 @@ from userstats import getStats
 
 def game(main): # launch the game window
     main.destroy()
-    return
     #END game
 
 def createRules(main): # create the window to display the rules
