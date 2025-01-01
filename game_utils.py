@@ -36,54 +36,46 @@ def dupeTrump(deck): # inserts a random trump card in the given deck, avoiding p
                 
 def getTrump(trumpVal, Tdeck): # runs a linear search on the deck to see if it contains the selected trump card or not
     for i in range(len(Tdeck)):
-        if trumpVal == Tdeck[i].trumpVal:
+        if int(trumpVal) == Tdeck[i].trumpVal:
             Tdeck.pop(i)
             return True
     return False
     #END getTrump
                 
 def useTrump(trumpVal, pile=None, deck=None): # calls the method linked to the trump card
-    match trumpVal:
+    match int(trumpVal):
         case 0:
             trump27()
         case 1:
             trump17()
         case 2:
-            return trumpRefresh(pile)
+            trumpRefresh(pile, deck)
         case 3:
             trumpDiscard(pile, deck)
     #END useTrump
 
 def trump27(): # sets card limit to 27
     updateLimit(27)
-    time.sleep(1)
     print("The card limit has increased to 27!")
-    time.sleep(1)
     #END trump27
 
 def trump17(): # sets card limit to 17
     updateLimit(17)
-    time.sleep(1)
     print("The card limit has decreased to 17!")
-    time.sleep(1)
     #END trump17
 
-def trumpRefresh(pile): # returns a new deck with two random cards from the pile
+def trumpRefresh(pile, deck): # returns a new deck with two random cards from the pile
     newDeck = [pile.pop(), pile.pop()]
-    time.sleep(1)
+    deck[:] = newDeck
     print("Hand discarded, two cards from pile drawn.")
-    time.sleep(1)
-    return newDeck
     #END trumpRefresh
 
 def trumpDiscard(pile, deck): # discards the last card drawn
     last = len(deck)-1
-    if last > 2:
+    if last >= 2:
         card = deck.pop()
         pile.append(card)
-        time.sleep(1)
         print("Last card discarded.")
-        time.sleep(1)
     #END trumpDiscard
 
    

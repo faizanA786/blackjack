@@ -13,21 +13,24 @@ import game_utils as u
 import new_trump as nt
 from gui import game_page
 
-def determineDecision(pile, playerDeck, enemyDeck, enemyTDeck): # dealer determines what choice to make
-    # specialTrump = decideTrump(pile, u.getTotal(playerDeck), u.getTotal(enemyDeck), enemyTDeck, enemyDeck)
-    specialTrump = False
+def determineDecision(window, pile, playerDeck, enemyDeck, enemyTDeck): # dealer determines what choice to make
+    specialTrump, usedTrump = decideTrump(pile, u.getTotal(playerDeck), u.getTotal(enemyDeck), enemyTDeck, enemyDeck)
     risk = riskCheck(u.getTotal(enemyDeck), u.getTotal(playerDeck))
-    if risk and not specialTrump:
+    if risk:
         game_page.updateDealerAction(0)
         drawCard(pile, enemyDeck)
         return False
-    else:
+    # elif usedTrump:
+    #     return determineDecision(window, pile, playerDeck, enemyDeck, enemyTDeck)
+    elif not risk and not usedTrump:
         print("\nDealer stands...")
-        game_page.updateDealerAction(1)
-        if not specialTrump:
-            return True
-        else:
+        if not usedTrump:
+            game_page.updateDealerAction(1)
+            
+        if specialTrump:
             return False
+        else:
+            return True
     #END determineDecision
 
 def drawCard(pile, enemyDeck): # draws a random card for the dealer
@@ -47,16 +50,18 @@ def decideTrump(pile, playerSum, enemySum, enemyTDeck, enemyDeck): # basic logic
     }
 
     specialTrump = False
+    usedTrump = False
     for trumpVal, useCondition in trumpConditions.items(): # Allows me to loop through the keys and values, where trumpVal = key and trumpCondition is the value
         if useCondition() and not specialTrump:
-            usedTrump = True
             print("\nDealer used " + str(trumpClass.getName(trumpVal)))
             newDeck = u.useTrump(trumpVal, pile, enemyDeck)
+            game_page.updateDealerAction(2, trumpVal, enemyDeck)
+            usedTrump = True    
             if newDeck is not None:
                 enemyDeck = newDeck
             if trumpVal == 0 or trumpVal == 1:
                 specialTrump = True
-    return specialTrump
+    return specialTrump, usedTrump
     #END decideTrump
 
 

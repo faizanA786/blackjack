@@ -29,7 +29,7 @@ def init(userID, playerScore, dealerScore, window): # initialises a new round
     u.updateLimit(21)
 
     dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit = game_page.initDeck(window, playerDeck, enemyDeck)
-    print("init draw stand buttons")
+    game_page.updateTrumps(None)
     game_page.updatePlayerButtons(window, pile, playerDeck, userID, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
     window.after(1000, lambda: nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, window, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit))
     print("Round Started")
@@ -42,8 +42,8 @@ def nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, play
             if playerPassed is not None:
                 game_page.updateDeck(playerDeck, enemyDeck, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
 
-                dealerPassed:bool = d.determineDecision(pile, playerDeck, enemyDeck, enemyTDeck)
-                game_page.updateDeck(playerDeck, enemyDeck, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
+                dealerPassed:bool = d.determineDecision(window, pile, playerDeck, enemyDeck, enemyTDeck)
+                window.after(500, lambda: game_page.updateDeck(playerDeck, enemyDeck, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit))
 
                 if playerPassed and dealerPassed: # if both players stand, end round
                     roundCondition = True
@@ -51,12 +51,12 @@ def nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, play
                 else: # insert a new trump into both decks
                     if u.dupeTrump(playerTDeck) == True:
                         print("\nYou have recieved a new trump card!")
-                        game_page.updateDeck(playerDeck, enemyDeck, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
+                        #game_page.updateDeck(playerDeck, enemyDeck, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
                     else:
                         print("\nYou have not recieved a new trump card, trump card deck full!")
                     u.dupeTrump(enemyTDeck)
-                    print("added draw stand buttons")
-                    game_page.updatePlayerButtons(window, pile, playerDeck, userID, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
+                    window.after(100, lambda: game_page.updateTrumps(playerTDeck))
+                    window.after(500, lambda: game_page.updatePlayerButtons(window, pile, playerDeck, userID, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit))
 
     processRound(roundCondition)
     #END nextRound
@@ -69,9 +69,7 @@ def compareScore(userID, playerDeck, enemyDeck, playerScore, dealerScore, window
     print("\nYour total " + str(playerSum))
     print("Dealer total " + str(enemySum))
 
-    if playerSum > u.updateLimit(None) and enemySum > u.updateLimit(None):
-        print("Round over, nobody wins.")
-    elif (playerSum > enemySum or enemySum > u.updateLimit(None)) and playerSum <= u.updateLimit(None):
+    if (playerSum > enemySum or enemySum > u.updateLimit(None)) and playerSum <= u.updateLimit(None):
         print("Round over, the dealer has lost!")
         playerScore += 1
         game_page.updateScores(playerScore, dealerScore)
@@ -79,23 +77,29 @@ def compareScore(userID, playerDeck, enemyDeck, playerScore, dealerScore, window
         print("Dealer : " + str(dealerScore) + "/3")
         if playerScore == 3:
             print("\nYou are the winner!")
+            game_page.updateDealerAction(-1, None, enemyDeck)
+            game_page.updatePlayerAction(-1, None, playerDeck)
             updateStats(userID, 0) # adds +1 to the players win stat
             
         else:
             print("\nStarting next round...")
+            game_page.updateDealerAction(-1, None, enemyDeck)
+            game_page.updatePlayerAction(-1, None, playerDeck)
             game_page.deleteLabels(dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
             window.after(1000, lambda: init(userID, playerScore, dealerScore, window))
     else:
         print("Round over, you lost to the dealer.")
         dealerScore += 1
         game_page.updateScores(playerScore, dealerScore)
-        print("Player : " + str(playerScore) + "/3")
-        print("Dealer : " + str(dealerScore) + "/3")
         if dealerScore == 3:
             print("\nGame over.")
+            game_page.updateDealerAction(-1, None, enemyDeck)
+            game_page.updatePlayerAction(-1, None, playerDeck)
             updateStats(userID, 1) # adds a +1 to the players loss stat
         else:
             print("\nStarting next round...")
+            game_page.updateDealerAction(-1, None, enemyDeck)
+            game_page.updatePlayerAction(-1, None, playerDeck)
             game_page.deleteLabels(dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
             window.after(1000, lambda: init(userID, playerScore, dealerScore, window))
     #END compareScore
