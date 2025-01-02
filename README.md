@@ -1,7 +1,7 @@
 # Blackjack Game
 
 A Python-based blackjack game (heavily inspired by Resident Evil 7, 21 DLC). This project was built with the goal of following the procedural programming paradigm that I am studying at university.
-Enter the command 'blackjack' in a terminal to run the game.
+Install with 'pip install 21blackjack-gui' and enter the command 'blackjack' in a terminal to run the game.
 
 ---
 ## Features
