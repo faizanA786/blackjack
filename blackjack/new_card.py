@@ -1,7 +1,7 @@
 """
 new_card.py
 
-Creates a new object that resembles a card
+Creates a new advanced data type that resembles a card
 This card is always randomized
 """
 
@@ -21,7 +21,7 @@ class newCard: # initialises the creation of the card
             case 1:
                 symbol = "Spades"
             case 2:
-                symbol = "Ace"
+                symbol = "Diamonds"
             case 3:
                 symbol = "Hearts"
             case 4:

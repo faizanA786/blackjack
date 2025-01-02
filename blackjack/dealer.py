@@ -8,34 +8,36 @@ Includes methods that let the dealer determine their decision, draw a card (if t
 # dependencies
 import time
 import random
-import new_card as nc
-import game_utils as u
-import new_trump as nt
+import blackjack.new_card as nc
+import blackjack.game_utils as u
+import blackjack.new_trump as nt
+from blackjack.gui import game_page
 
-def determineDecision(pile, playerDeck, enemyDeck, enemyTDeck): # dealer determines what choice to make
-    specialTrump = decideTrump(pile, u.getTotal(playerDeck), u.getTotal(enemyDeck), enemyTDeck, enemyDeck)
+def determineDecision(window, pile, playerDeck, enemyDeck, enemyTDeck): # dealer determines what choice to make
+    specialTrump, usedTrump = decideTrump(pile, u.getTotal(playerDeck), u.getTotal(enemyDeck), enemyTDeck, enemyDeck)
     risk = riskCheck(u.getTotal(enemyDeck), u.getTotal(playerDeck))
-    if risk and not specialTrump:
+    if risk:
+        game_page.updateDealerAction(0)
         drawCard(pile, enemyDeck)
         return False
-    else:
-        time.sleep(1)
+    # elif usedTrump:
+    #     return determineDecision(window, pile, playerDeck, enemyDeck, enemyTDeck)
+    elif not risk and not usedTrump:
         print("\nDealer stands...")
-        time.sleep(1)
+        if not usedTrump:
+            game_page.updateDealerAction(1)
+            
         if specialTrump:
-            return True
-        else:
             return False
+        else:
+            return True
     #END determineDecision
 
 def drawCard(pile, enemyDeck): # draws a random card for the dealer
-    time.sleep(1)
     print("\nDealer draws...")
     newCard = pile.pop()
-    time.sleep(1)
     print("Dealer was dealt a " + str(newCard.value) + " " + newCard.symbol)
     enemyDeck.append(newCard)
-    time.sleep(1)
     return
     #END drawCard
 
@@ -48,17 +50,18 @@ def decideTrump(pile, playerSum, enemySum, enemyTDeck, enemyDeck): # basic logic
     }
 
     specialTrump = False
+    usedTrump = False
     for trumpVal, useCondition in trumpConditions.items(): # Allows me to loop through the keys and values, where trumpVal = key and trumpCondition is the value
         if useCondition() and not specialTrump:
-            usedTrump = True
-            time.sleep(1)
             print("\nDealer used " + str(trumpClass.getName(trumpVal)))
             newDeck = u.useTrump(trumpVal, pile, enemyDeck)
+            game_page.updateDealerAction(2, trumpVal, enemyDeck)
+            usedTrump = True    
             if newDeck is not None:
                 enemyDeck = newDeck
             if trumpVal == 0 or trumpVal == 1:
                 specialTrump = True
-    return specialTrump
+    return specialTrump, usedTrump
     #END decideTrump
 
 
