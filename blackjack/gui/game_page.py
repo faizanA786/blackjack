@@ -5,10 +5,10 @@ Methods that deal with all operations linked to user input for gameplay
 """
 
 #dependencies
-from game import *
-from player import *
+from blackjack.game_utils import *
+from blackjack.player import *
+from blackjack.game import *
 from tkinter import *
-from game_utils import *
 
 def getName(trumpVal): # grabs the name of the trump card via its trump value
     match trumpVal:
@@ -22,23 +22,21 @@ def getName(trumpVal): # grabs the name of the trump card via its trump value
             return "Discard"
     #END getName
 
-def updateTrumps(playerTDeck, action=None, state=[None]):
+def updateTrumps(playerTDeck, action=None, state=[None]): # update trump card text display
     if state[0] is None:
-        print("added trump labels")
         state[:] = action
     elif playerTDeck is None:
         for i in range(len(state)):
             state[i].config(text="") # clear text
     else:
-        print("updatetrumps called")
-
         for i in range(len(state)):
             state[i].config(text="") # clear text
 
         for i in range(len(playerTDeck)):
             state[i].config(text="(" + str(playerTDeck[i].trumpVal) + ")" + " - " + str(playerTDeck[i].name) + " : " + str(playerTDeck[i].desc) + "\n") 
+    #END updateTrumps
 
-def updateScores(playerScore, dealerScore, action=None, state=[None]):
+def updateScores(playerScore, dealerScore, action=None, state=[None]): # update score display
     if state[0] is None:
         state[0] = action
     state[0].config(text="Dealer: " + str(dealerScore) + "/3\n" + "Player: " + str(playerScore) + "/3")
@@ -47,8 +45,9 @@ def updateScores(playerScore, dealerScore, action=None, state=[None]):
         state[0].config(text="You Won!", fg="cyan")
     if dealerScore == 3:
         state[0].config(text="You Lost!", fg="red")
+    #END updateScores
 
-def updatePlayerAction(action, trumpVal=None, playerDeck=None, state=[None]):
+def updatePlayerAction(action, trumpVal=None, playerDeck=None, state=[None]): # update player action display
     if state[0] is None:
         state[0] = action
     elif action == 0: # draw
@@ -59,8 +58,9 @@ def updatePlayerAction(action, trumpVal=None, playerDeck=None, state=[None]):
         state[0].config(text="You: Used " + getName(trumpVal))
     elif action == -1: # end
         state[0].config(text="You: Had " + str(getTotal(playerDeck)) + "/" + str(updateLimit()))
+    #END updatePlayerAction
 
-def updateDealerAction(action, trumpVal=None, enemyDeck=None, state=[None]):
+def updateDealerAction(action, trumpVal=None, enemyDeck=None, state=[None]): # update dealer action display
     if state[0] is None:
         state[0] = action
     elif action == 0: # draw
@@ -71,8 +71,9 @@ def updateDealerAction(action, trumpVal=None, enemyDeck=None, state=[None]):
         state[0].config(text="Dealer: Used " + getName(trumpVal))
     elif action == -1: # clear
         state[0].config(text="Dealer: Had " + str(getTotal(enemyDeck)) + "/" + str(updateLimit()))
+    #END updateDealerAction
 
-def handleSkip(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, window, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit, draw, skip, trump, submit):
+def handleSkip(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, window, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit, draw, skip, trump, submit): # handle player standing
     draw.destroy()
     skip.destroy()
     trump.destroy()
@@ -81,8 +82,10 @@ def handleSkip(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, pla
     updatePlayerAction(1)
     print("You stand...")
     window.after(1000, lambda: nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, window, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit, True))
+    #END handleSkip
 
-def handleDrawCard(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, window, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit, draw, skip, trump, submit):
+
+def handleDrawCard(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, window, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit, draw, skip, trump, submit): # handle player drawing a card
     draw.destroy()
     skip.destroy()
     trump.destroy()
@@ -91,8 +94,9 @@ def handleDrawCard(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck,
     updatePlayerAction(0)
     window.after(1000, lambda: drawCard(pile, playerDeck))
     window.after(1000, lambda: nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, window, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit, False))
+    #END handleDrawCard
 
-def handleTrump(window, entry, pile, playerDeck, userID, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, enemyDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit, draw, skip, trump, submit):
+def handleTrump(window, entry, pile, playerDeck, userID, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, enemyDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit, draw, skip, trump, submit): # handle player using a trump
     valid = p.useTrump(entry.get(), pile, playerDeck, playerTDeck)
     if valid:
         window.after(100, lambda: updateDeck(playerDeck, enemyDeck, enemyDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit))
@@ -106,6 +110,7 @@ def handleTrump(window, entry, pile, playerDeck, userID, enemyDeck, playerTDeck,
         window.after(250, lambda: updatePlayerButtons(window, pile, playerDeck, userID, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, enemyDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit))
     else:
         entry.delete(0, END)
+    #END handleTrump
 
 def updatePlayerButtons(main, pile, playerDeck, userID, enemyDeck, playerTDeck, enemyTDeck, playerScore, dealerScore, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit): # initialises player buttons for drawing, using trump or standing
     trump = Entry(main, font=("Arial", 15), bg="black", fg="white", insertbackground="white")
@@ -123,11 +128,12 @@ def updatePlayerButtons(main, pile, playerDeck, userID, enemyDeck, playerTDeck, 
     submit.place(relx="0.4", rely="0.4", anchor="n")
     #END updatePlayerButtons
 
-def deleteLabels(playerDeckDisplay, enemyDeckDisplay, playerLimit, dealerLimit):
+def deleteLabels(playerDeckDisplay, enemyDeckDisplay, playerLimit, dealerLimit): # delete text displays
     playerDeckDisplay.destroy()
     enemyDeckDisplay.destroy()
     playerLimit.destroy()
     dealerLimit.destroy()
+    #END deleteLabels
 
 def updateDeck(playerDeck, enemyDeck, enemyDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit): # updates the display for both decks
     enemyCards = "(???)  "
@@ -146,7 +152,7 @@ def updateDeck(playerDeck, enemyDeck, enemyDeckDisplay, playerDeckDisplay, deale
     dealerLimit.config(text=("? + " + str(getTotal(enemyDeck) - enemyDeck[0].value) + "/" + str(updateLimit())))
     #END updateDeck 
 
-def initDeck(main, playerDeck, enemyDeck):
+def initDeck(main, playerDeck, enemyDeck): # create deck text displays
     enemyCards = "(???)  "
     playerCards = ""
 
@@ -168,6 +174,7 @@ def initDeck(main, playerDeck, enemyDeck):
     playerLimit.place(relx="0.75", rely="0.75", anchor="s")
 
     return dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit
+    #END initDeck
 
 def create(userID): # create the main window for the game
     WIDTH = 1200

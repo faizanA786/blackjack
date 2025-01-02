@@ -5,9 +5,8 @@ Important game utilities used by both the player and dealer.
 """
 
 # dependencies
-import time
-import new_card as nc
-import new_trump as nt
+import blackjack.new_card as nc
+import blackjack.new_trump as nt
 
 def getTotal(deck): # calculates the value sum of cards of the given deck
     sum = 0 

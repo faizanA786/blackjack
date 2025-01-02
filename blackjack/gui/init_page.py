@@ -7,7 +7,7 @@ Called upon launching the program from init.py
 
 # dependencies
 from tkinter import *
-from gui import login_page
+from blackjack.gui import login_page
 
 def create(): # create main window
     WIDTH = 1000

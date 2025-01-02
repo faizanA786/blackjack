@@ -6,14 +6,13 @@ Initialises a round, and controls the turn based gameplay.
 """
 
 # dependencies
-from gui import game_page
-import new_card as nc
-import new_trump as nt
-import game_utils as u
-from userstats import updateStats
-import player as p
-import dealer as d
-import time
+from blackjack.gui import game_page
+import blackjack.new_card as nc
+import blackjack.new_trump as nt
+import blackjack.game_utils as u
+from blackjack.userstats import updateStats
+import blackjack.player as p
+import blackjack.dealer as d
 
 
 def init(userID, playerScore, dealerScore, window): # initialises a new round
@@ -43,7 +42,7 @@ def nextRound(userID, pile, playerDeck, enemyDeck, playerTDeck, enemyTDeck, play
                 game_page.updateDeck(playerDeck, enemyDeck, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
 
                 dealerPassed:bool = d.determineDecision(window, pile, playerDeck, enemyDeck, enemyTDeck)
-                window.after(500, lambda: game_page.updateDeck(playerDeck, enemyDeck, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit))
+                game_page.updateDeck(playerDeck, enemyDeck, dealerDeckDisplay, playerDeckDisplay, dealerLimit, playerLimit)
 
                 if playerPassed and dealerPassed: # if both players stand, end round
                     roundCondition = True

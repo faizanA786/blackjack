@@ -1,6 +1,11 @@
+## [1.0.0] - 2025-01-02
+### Added
+- Organized files
+- Code documentation
+
 ## [0.7.0] - 2025-01-01
 ### Added
-- 
+- Added trump card gui input
 
 ## [0.6.0] - 2024-12-26
 ### Added

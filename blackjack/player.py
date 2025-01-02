@@ -6,9 +6,9 @@ Controls the functionality of using a trump, stand or draw a card.
 """
 
 # dependencies
-from gui import game_page
-import new_card as nc
-import game_utils as u
+from blackjack.gui import game_page
+import blackjack.new_card as nc
+import blackjack.game_utils as u
 import time
 
 def drawCard(pile, playerDeck): # draws a random card from the pile into your deck

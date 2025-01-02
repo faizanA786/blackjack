@@ -8,10 +8,10 @@ Includes methods that let the dealer determine their decision, draw a card (if t
 # dependencies
 import time
 import random
-import new_card as nc
-import game_utils as u
-import new_trump as nt
-from gui import game_page
+import blackjack.new_card as nc
+import blackjack.game_utils as u
+import blackjack.new_trump as nt
+from blackjack.gui import game_page
 
 def determineDecision(window, pile, playerDeck, enemyDeck, enemyTDeck): # dealer determines what choice to make
     specialTrump, usedTrump = decideTrump(pile, u.getTotal(playerDeck), u.getTotal(enemyDeck), enemyTDeck, enemyDeck)

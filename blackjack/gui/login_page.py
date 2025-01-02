@@ -6,10 +6,10 @@ Methods that deal with all operations linked to profiles
 
 #dependencies
 from tkinter import *
-from userstats import newProfile, login as existingProfile
+from blackjack.userstats import newProfile, login as existingProfile
 
 def fetchUserID(val=None, userID=[-1]): # retrieves user ID
-    if val is  None:
+    if val is None:
         return userID[0]
     else:
         userID[0] = val

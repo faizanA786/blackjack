@@ -6,7 +6,8 @@ Methods that deal with all operations linked to the main menu
 
 #dependencies
 from tkinter import *
-from userstats import getStats
+from blackjack.userstats import getStats
+from blackjack.gui import login_page
 
 def game(main): # launch the game window
     main.destroy()
@@ -51,7 +52,7 @@ def createStats(main, userID): # create window to display user stats
     gamesWon = Label(stats, text="Games Won : " + str(playerStats[1]), font=("Arial", 25), bg="black", fg="white")
     gamesLost = Label(stats, text="Games Lost : " + str(playerStats[2]), font=("Arial", 25), bg="black", fg="white")
 
-    def close():
+    def close(): # handle closing window
         main.deiconify()  
         stats.destroy()   
     stats.protocol("WM_DELETE_WINDOW", close)
@@ -86,6 +87,11 @@ def create(userID): # create main window
     play.place(relx=0.5, rely=0.4, anchor=CENTER)
     stats.place(relx=0.5, rely=0.6, anchor=CENTER)
     rules.place(relx=0.5, rely=0.8, anchor=CENTER)
+
+    def close(): # handle closing window
+        login_page.fetchUserID(-1)
+        main.destroy()
+    main.protocol("WM_DELETE_WINDOW", close)
 
     main.mainloop()
     #END create

@@ -6,37 +6,36 @@ Controls user profiles.
 
 # dependencies
 import sqlite3 as sq
-import time
+import os
 
-def dbInit(): # creates a database if there already isnt one with a table called users
-    connectDatabase = sq.connect("user.db")
+dbPath = os.path.join(os.path.dirname(__file__), 'user.db')
+
+def dbInit():
+
+    connectDatabase = sq.connect(dbPath)
     database = connectDatabase.cursor()
 
-    database.execute
-    (
-        '''
-        CREATE TABLE IF NOT EXISTS users
-        (
-            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE,
-            password TEXT,
-            games INTEGER DEFAULT 0,
-            games_won INTEGER DEFAULT 0,
-            games_lost INTEGER DEFAULT 0
-        )
-        '''
-    )
-
-    database.execute("SELECT * FROM users")
-    users = database.fetchall()
-    print(users)
+    try:
+        database.execute('''
+            CREATE TABLE IF NOT EXISTS users
+            (
+                user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE,
+                password TEXT,
+                games INTEGER DEFAULT 0,
+                games_won INTEGER DEFAULT 0,
+                games_lost INTEGER DEFAULT 0
+            )
+        ''')
+        print("Table creation attempt finished")
+    except sq.DatabaseError as e:
+        print("Error during table creation")
 
     connectDatabase.commit()
     connectDatabase.close()
-    #END dbInit
 
 def newProfile(username, password): # insert a new profile into the users table
-    connectDatabase = sq.connect("user.db")
+    connectDatabase = sq.connect(dbPath)
     database = connectDatabase.cursor()
 
     database.execute("SELECT user_id FROM users WHERE username = ?", (username,))
@@ -59,7 +58,7 @@ def newProfile(username, password): # insert a new profile into the users table
     #END newProfile
 
 def login(username, password): # login to an existing profile inside the users table
-    connectDatabase = sq.connect("user.db")
+    connectDatabase = sq.connect(dbPath)
     database = connectDatabase.cursor()
 
     database.execute("SELECT user_id FROM users WHERE username = ? AND password = ?", (username, password))
@@ -74,7 +73,7 @@ def login(username, password): # login to an existing profile inside the users t
     #END login
 
 def updateStats(userID, stats): # update games, win, loss stats accordingly
-    connectDatabase = sq.connect("user.db")
+    connectDatabase = sq.connect(dbPath)
     database = connectDatabase.cursor()
 
     database.execute("UPDATE users SET games = games + 1 WHERE user_id = ?", [userID])
@@ -90,7 +89,7 @@ def updateStats(userID, stats): # update games, win, loss stats accordingly
     
 
 def getStats(userID): # prints the users overall stats
-    connectDatabase = sq.connect("user.db")
+    connectDatabase = sq.connect(dbPath)
     database = connectDatabase.cursor()
 
     database.execute("SELECT games, games_won, games_lost FROM users WHERE user_id = ?", [userID])
