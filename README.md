@@ -11,3 +11,5 @@ Install with 'pip install 21blackjack-gui' and enter the command 'blackjack' in 
 - **Logic-based Dealer:** Play against an intelligent opponent.
 ---
 
+![Demo GIF](https://i.imgur.com/44HoQpe.gif)
+https://pypi.org/project/21blackjack-gui/
